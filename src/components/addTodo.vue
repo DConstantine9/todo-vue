@@ -20,7 +20,8 @@ export default {
       if (this.title.trim()) {
         const newTodo = {
           id: Date.now(),
-          title: this.title
+          title: this.title,
+          done: false
         }
 
         this.$emit("add-todo", newTodo)

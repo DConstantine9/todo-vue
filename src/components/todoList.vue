@@ -49,9 +49,17 @@ export default {
     }
   },
 
-  /* watch: {
-    filter(value)
-  } */
+  computed: {
+    filterTodos() {
+      if (this.filter === "all") {
+        return this.todos
+      } else if (this.filter === "completed") {
+        return this.todos.filter(t => t.done)
+      } else {
+        return this.todos.filter(t => !t.done)
+      }
+    }
+  }
 }
 </script>
 

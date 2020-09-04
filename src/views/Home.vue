@@ -2,7 +2,7 @@
   <div>
     <h1>todo</h1>
     <TodoList 
-      v-bind:todos="todos" 
+
       @delete-todo="deleteTodo" 
     />
   </div>
