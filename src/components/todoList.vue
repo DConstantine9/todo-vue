@@ -1,12 +1,8 @@
 <template>
-  <div>
-    <h2>TodoList</h2>
+  <div class="todoList">
+    <h2>{{list.title}}</h2>
+    <button v-on:click="$emit('delete-list', list.id)" class="deleteButton">&times;</button>
     <AddTodo @add-todo="addTodo" />
-    <select v-model="filter">
-      <option value="all">all</option>
-      <option value="completed">completed</option>
-      <option value="not-completed">not completed</option>
-    </select>
     <TodoCard 
       v-for="todo in todos"
       v-bind:todo="todo" :key="todo.i"
@@ -21,7 +17,13 @@ import AddTodo from "@/components/addTodo"
 
 export default {
   name: "TodoList",
-  /* props: ["todos"], */
+  
+  props: {
+    list: {
+      type: Object,
+      required: true
+    }
+  },
 
   data() {
     return {
@@ -29,8 +31,7 @@ export default {
         {id:1, title: "123", done: false},
         {id:2, title: "4123", done: false},
         {id:3, title: "123as", done: false}
-      ],
-      filter: "all"
+      ],     
     }
   },
 
@@ -41,28 +42,30 @@ export default {
 
   methods: {
     deleteTodo(id) {
-      this.$emit("delete-todo", id)
+      this.todos = this.todos.filter(todo => todo.id !== id)
     },
 
     addTodo(todo) {
       this.todos.unshift(todo)
     }
   },
-
-  computed: {
-    filterTodos() {
-      if (this.filter === "all") {
-        return this.todos
-      } else if (this.filter === "completed") {
-        return this.todos.filter(t => t.done)
-      } else {
-        return this.todos.filter(t => !t.done)
-      }
-    }
-  }
 }
 </script>
 
 <style>
+  .todoList {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    width: 30%;
+  }
+
+  .deleteButton {
+    font-size: 20px;
+    border-radius: 5px;
+    color: white;
+    background: red;
+    border: none;
+  }
 
 </style>

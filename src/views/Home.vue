@@ -1,34 +1,60 @@
 <template>
   <div>
     <h1>todo</h1>
+    <select v-model="filter">
+      <option value="all">all</option>
+      <option value="completed">completed</option>
+      <option value="not-completed">not completed</option>
+    </select>
+    <AddList @add-list="addList" />
     <TodoList 
-
-      @delete-todo="deleteTodo" 
+      v-for="list in lists" :key="list.id"
+      v-bind:list="list" 
+      v-on:delete-list="deleteList"
     />
   </div>
 </template>
 
 <script>
 import TodoList from "@/components/todoList"
+import AddList from "@/components/addList"
+
 
 export default {
   components: {
     TodoList,
+    AddList
   },
   
- /*  data() {
+  data() {
     return {
-      todos: [
-        {id:1, title: "123"},
-        {id:2, title: "4123"},
-        {id:3, title: "123as"}
+      filter: "all",
+      lists: [
+        {id: 1, title: "1234w34"},
       ]
     } 
-  },*/
+  },
 
   methods: {
-    deleteTodo(id) {
-      this.todos = this.todos.filter(todo => todo.id !== id)
+    
+    deleteList(id) {
+      this.lists = this.lists.filter(list => list.id !== id)
+    },
+
+    addList(list) {
+      this.lists.unshift(list)
+    }
+  },
+
+  computed: {
+    filterTodos() {
+      if (this.filter === "all") {
+        return this.todos
+      } else if (this.filter === "completed") {
+        return this.todos.filter(t => t.done)
+      } else {
+        return this.todos.filter(t => !t.done)
+      }
     }
   }
 }
@@ -38,4 +64,13 @@ export default {
 .todo {
   border: 1px solid black;
 }
+
+input[type="checkbox"],
+button, 
+select {
+  cursor: pointer;
+  outline:none;
+}
+
+
 </style>
