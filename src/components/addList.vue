@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="onSubmit">
+    <input type="text" v-model="title">
     <button type="submit">Создать новый список</button>
   </form>
 </template>
@@ -10,7 +11,7 @@ export default {
 
   data() {
     return {
-      title: "Новый список"
+      title: ""
     }
   },
 
@@ -23,6 +24,7 @@ export default {
         }
 
         this.$emit("add-list", newList)
+        this.title = ""
       }
     }
   }

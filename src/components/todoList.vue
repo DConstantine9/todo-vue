@@ -1,11 +1,20 @@
 <template>
   <div class="todoList">
-    <h2>{{list.title}}</h2>
-    <button v-on:click="$emit('delete-list', list.id)" class="deleteButton">&times;</button>
+    <div class="listHeader">
+      <span></span>
+      <h2>{{list.title}}</h2>
+      <button v-on:click="$emit('delete-list', list.id)" class="deleteButton">&times;</button>
+    </div>
+    <select v-model="filter">
+      <option value="all">all</option>
+      <option value="completed">completed</option>
+      <option value="not-completed">not completed</option>
+    </select>
+    <input type="search" v-model="search" placeholder="искать заметку" />
     <AddTodo @add-todo="addTodo" />
     <TodoCard 
-      v-for="todo in todos"
-      v-bind:todo="todo" :key="todo.i"
+      v-for="todo in searchTodo" :key="todo.id"
+      v-bind:todo="todo" 
       v-on:delete-todo="deleteTodo"
     />
   </div>
@@ -27,11 +36,9 @@ export default {
 
   data() {
     return {
-      todos: [
-        {id:1, title: "123", done: false},
-        {id:2, title: "4123", done: false},
-        {id:3, title: "123as", done: false}
-      ],     
+      search: "",
+      filter: "all",
+      todos: []
     }
   },
 
@@ -43,21 +50,57 @@ export default {
   methods: {
     deleteTodo(id) {
       this.todos = this.todos.filter(todo => todo.id !== id)
+
     },
 
     addTodo(todo) {
       this.todos.unshift(todo)
     }
   },
+
+  computed: {
+    searchTodo() {
+      return this.todos.filter((todo) => {
+        return todo.title.toLowerCase().includes(this.search.toLowerCase())
+      })
+
+      if (this.filter === "all") {
+        return this.todos
+      } 
+
+      if (this.filter === "completed") {
+        return this.todos.filter(t => t.done)
+      }
+
+      if (this.filter === "not-completed") {
+        return this.todos.filter(t => !t.done)
+      }
+    },
+
+  }
 }
 </script>
 
 <style>
   .todoList {
+    display: flex;
+    flex-direction: column;
     border: 2px solid black;
+    justify-content: center;
     border-radius: 5px;
     padding: 10px;
     width: 30%;
+    margin-bottom: 15px;
+  }
+
+  .listHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .todoList h2 {
+    margin: 10px;
   }
 
   .deleteButton {
@@ -66,6 +109,10 @@ export default {
     color: white;
     background: red;
     border: none;
+  }
+
+  input[type="search"] {
+    margin: 10px 0;
   }
 
 </style>

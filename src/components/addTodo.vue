@@ -14,7 +14,6 @@ export default {
     }
   },
 
-
   methods: {
     onSubmit() {
       if (this.title.trim()) {
@@ -33,5 +32,7 @@ export default {
 </script>
 
 <style>
-
+  form {
+    margin-bottom: 15px;
+  }
 </style>

@@ -1,11 +1,6 @@
 <template>
-  <div>
+  <div class="main">
     <h1>todo</h1>
-    <select v-model="filter">
-      <option value="all">all</option>
-      <option value="completed">completed</option>
-      <option value="not-completed">not completed</option>
-    </select>
     <AddList @add-list="addList" />
     <TodoList 
       v-for="list in lists" :key="list.id"
@@ -30,7 +25,7 @@ export default {
     return {
       filter: "all",
       lists: [
-        {id: 1, title: "1234w34"},
+        {id: 1, title: "Список дел"},
       ]
     } 
   },
@@ -61,6 +56,13 @@ export default {
 </script>
   
 <style>
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
 .todo {
   border: 1px solid black;
 }
